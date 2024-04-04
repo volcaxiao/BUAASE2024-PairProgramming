@@ -1,19 +1,22 @@
 import assert from "assert";
 
 // Choose proper "import" depending on your PL.
-import { mancalaOperator as op1 } from "./t3-2-as/build/release.js";
+// import { mancalaOperator as op1 } from "./t3-2-as/build/release.js";
 // import { mancala_operator as op1 } from "./t3_2_rust/pkg/t3_2_rust.js"
 // [Write your own "import" for other PLs.]
+op1 = undefined;
 
 // Choose proper "import" depending on your PL.
-import { mancalaOperator as op2 } from "./t3-2-as-rival/build/release.js";
+// import { mancalaOperator as op2 } from "./t3-2-as-rival/build/release.js";
 // import { mancala_operator as op2 } from "./t3_2_rust_rival/pkg/t3_2_rust.js"
 // [Write your own "import" for other PLs.]
+op2 = undefined;
 
 // Choose proper "import" depending on your PL.
-import { mancalaBoard as board } from "./t3-1-as/build/release.js";
+// import { mancalaBoard as board } from "./t3-1-as/build/release.js";
 // import { mancala_board as board } from "./t3_1_rust/pkg/t3_1_rust.js"
 // [Write your own "import" for other PLs.]
+import { mancalaBoard as board } from "./t3_1_cpp/bridge.js";
 
 let operator, status, operation, operationSequence, boardReturn, isEnded;
 let op1Result = 0, op2Result = 0;
