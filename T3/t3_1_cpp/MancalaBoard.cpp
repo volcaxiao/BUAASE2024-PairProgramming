@@ -32,15 +32,14 @@ struct Board {
     }
 
     state plant(int32_t instr) {
-        if (instr / 10 != now_flag) {
-            return ILLEGAL;
-        }
         auto start = now_flag == 1 ? holes1 : holes2;
         auto skip = now_flag == 1 ? &store2 : &store1;
         auto cur = start + instr % 10 - 1;
-        if (*cur == 0) {
+        // 指令非法：不是自己的回合或者选定点没有豆子
+        if (instr / 10 != now_flag || *cur == 0) {
             return ILLEGAL;
         }
+        // 指令合法：开始播种
         auto cnt = *cur;
         *cur = 0;
         for (cur++; cnt; cur++) {
@@ -50,6 +49,14 @@ struct Board {
             cnt--;
         }
         cur--;
+        // 检查是否可以吃子
+        if (auto &opposide = *(holes1 + 12 - (cur - holes1));
+        *cur == 1 && cur >= start && cur < start + 6 && opposide != 0)  {
+            getFirst(now_flag) += opposide + 1;
+            opposide = 0;
+            *cur = 0;
+        }
+        // 检查是否结束
         int32_t sum1 = 0, sum2 = 0;
         for (int i = 0; i < 6; ++i) {
             sum1 += holes1[i];
@@ -62,14 +69,9 @@ struct Board {
             memset(holes2, 0, sizeof(holes2));
             return OVER;
         }
+        // 检查是否额外回合
         if (cur == &getFirst(now_flag)) {
             return CONTINUE;
-        }
-        if (auto &opposide = *(holes1 + 12 - (cur - holes1));
-        *cur == 1 && cur >= start && cur < start + 6 && opposide != 0)  {
-            getFirst(now_flag) += opposide + 1;
-            opposide = 0;
-            *cur = 0;
         }
         now_flag = 3 - now_flag;
         return CONTINUE;
