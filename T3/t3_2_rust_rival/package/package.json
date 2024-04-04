@@ -1,0 +1,11 @@
+{
+  "name": "kalah",
+  "version": "0.1.0",
+  "files": [
+    "kalah_bg.wasm",
+    "kalah.js",
+    "kalah.d.ts"
+  ],
+  "main": "kalah.js",
+  "types": "kalah.d.ts"
+}

@@ -117,23 +117,34 @@ uint32_t mancalaOperator(Board *board) {
     return board->bestNext();
 }
 
+void formatOutputBoard(Board *board) {
+    for (int i = 5; i >= 0; --i) {
+        cout << " | " << (int) board->holes2[i];
+    }
+    cout << " | " << endl;
+    cout << " | " << (int) board->store2 << " |            " << " | " << (int) board->store1 << " | " << endl;
+    for (int i = 0; i < 6; ++i) {
+        cout << " | " << (int) board->holes1[i];
+    }
+    cout << " | " << endl;
+}
 
 // test
 int main() {
     Board board(1);
     Board::state st = Board::CONTINUE;
     while (st != Board::OVER) {
-        uint32_t nextStep = mancalaOperator(&board);
+        formatOutputBoard(&board);
+
+        uint32_t nextStep;
+        if (board.now_flag == 1) {
+            cout << "Please input next step: ";
+            cin >> nextStep;
+        } else {
+            nextStep = mancalaOperator(&board);
+        }
         cout << "Player: " << (int) board.now_flag << " nextStep: " << nextStep << endl;
         st = board.plant(nextStep);
-        for (int i = 5; i >= 0; --i) {
-            cout << " | " << (int) board.holes2[i];
-        }
-        cout << " | " << endl;
-        cout << " | " << (int) board.store2 << " |            " << " | " << (int) board.store1 << " | " << endl;
-        for (int i = 0; i < 6; ++i) {
-            cout << " | " << (int) board.holes1[i];
-        }
-        cout << " | " << endl;
     }
+    formatOutputBoard(&board);
 }
