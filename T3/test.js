@@ -10,7 +10,7 @@ import { mancalaOperator as op1 } from "./t3_2_cpp/bridge.js";
 // import { mancalaOperator as op2 } from "./t3-2-as-rival/build/release.js";
 // import { mancala_operator as op2 } from "./t3_2_rust_rival/pkg/t3_2_rust.js"
 // [Write your own "import" for other PLs.]
-import { mancalaOperator as op2 } from "./t3_2_cpp_rival/t3_2_cpp.js"
+import { mancalaOperator as op2 } from "./t3_2_cpp_xlf/test.js"
 
 // Choose proper "import" depending on your PL.
 // import { mancalaBoard as board } from "./t3-1-as/build/release.js";
@@ -56,7 +56,7 @@ do {
     }
     // console.log(operation, boardReturn);
 } while (!isEnded);
-// console.log("🎉 Finished battle1:", boardReturn);
+console.log("🎉 Finished battle1:", boardReturn);
 
 // Now change to start from op2.
 operator = 2;
