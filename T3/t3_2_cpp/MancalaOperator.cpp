@@ -87,7 +87,7 @@ struct Board {
             if (auto st = next.plant(now_flag * 10 + i); st == ILLEGAL) {
                 continue;
             } else if (st == OVER) {
-                score = getFirst(now_flag) - getSecond(now_flag);
+                score = next.getFirst(now_flag) - next.getSecond(now_flag);
             } else if (next.now_flag == now_flag) {
                 score = next.search(depth - 1, alpha, beta).second;
             } else {
@@ -108,7 +108,7 @@ struct Board {
     }
 
     uint32_t bestNext() {
-        return search(15, -0x3f3f3f3f, 0x3f3f3f3f).first;
+        return search(11, -0x3f3f3f3f, 0x3f3f3f3f).first;
     }
 };
 
