@@ -31,7 +31,7 @@ struct Board {
         return flag == 1 ? store2 : store1;
     }
 
-    state plant(uint8_t instr) {
+    state plant(int32_t instr) {
         if (instr / 10 != now_flag) {
             return ILLEGAL;
         }
@@ -50,6 +50,18 @@ struct Board {
             cnt--;
         }
         cur--;
+        int32_t sum1 = 0, sum2 = 0;
+        for (int i = 0; i < 6; ++i) {
+            sum1 += holes1[i];
+            sum2 += holes2[i];
+        }
+        if (sum1 == 0 || sum2 == 0) {
+            store1 += sum1;
+            store2 += sum2;
+            memset(holes1, 0, sizeof(holes1));
+            memset(holes2, 0, sizeof(holes2));
+            return OVER;
+        }
         if (cur == &getFirst(now_flag)) {
             return CONTINUE;
         }
@@ -59,25 +71,13 @@ struct Board {
             opposide = 0;
             *cur = 0;
         }
-        uint8_t sum1 = 0, sum2 = 0;
-        for (int i = 0; i < 6; ++i) {
-            sum1 += holes1[i];
-            sum2 += holes2[i];
-        }
-        if (sum1 == 0 || sum2 == 0) {
-            store1 += sum1;
-            store2 += sum2;
-            memset(holes1, 0, 6);
-            memset(holes2, 0, 6);
-            return OVER;
-        }
         now_flag = 3 - now_flag;
         return CONTINUE;
     }
 
     pair<int32_t, int32_t> search(uint8_t depth, int32_t alpha, int32_t beta) {
         if (depth == 0) {
-            return { -1, getFirst(now_flag) - getSecond(now_flag) };
+            return { -1, (getFirst(now_flag) - getSecond(now_flag))};
         }
         int32_t best = -0x3f3f3f3f;
         int32_t best_instr = -1;

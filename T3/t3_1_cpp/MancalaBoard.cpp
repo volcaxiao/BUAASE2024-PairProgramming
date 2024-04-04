@@ -50,15 +50,6 @@ struct Board {
             cnt--;
         }
         cur--;
-        if (cur == &getFirst(now_flag)) {
-            return CONTINUE;
-        }
-        if (auto &opposide = *(holes1 + 12 - (cur - holes1));
-        *cur == 1 && cur >= start && cur < start + 6 && opposide != 0)  {
-            getFirst(now_flag) += opposide + 1;
-            opposide = 0;
-            *cur = 0;
-        }
         int32_t sum1 = 0, sum2 = 0;
         for (int i = 0; i < 6; ++i) {
             sum1 += holes1[i];
@@ -67,9 +58,18 @@ struct Board {
         if (sum1 == 0 || sum2 == 0) {
             store1 += sum1;
             store2 += sum2;
-            memset(holes1, 0, 6);
-            memset(holes2, 0, 6);
+            memset(holes1, 0, sizeof(holes1));
+            memset(holes2, 0, sizeof(holes2));
             return OVER;
+        }
+        if (cur == &getFirst(now_flag)) {
+            return CONTINUE;
+        }
+        if (auto &opposide = *(holes1 + 12 - (cur - holes1));
+        *cur == 1 && cur >= start && cur < start + 6 && opposide != 0)  {
+            getFirst(now_flag) += opposide + 1;
+            opposide = 0;
+            *cur = 0;
         }
         now_flag = 3 - now_flag;
         return CONTINUE;
