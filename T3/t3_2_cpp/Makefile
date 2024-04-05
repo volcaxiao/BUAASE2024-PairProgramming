@@ -10,7 +10,7 @@ debug: ${SRC} build
 	${CC} ${SRC} -o build/debug.cjs -O0 ${METHODS} ${FLAGS}
 
 test: ${SRC} build
-	g++ ${SRC} -o build/test -O3
+	g++ ${SRC} -o build/test -O3 -std=c++17
 	./build/test
 
 build:

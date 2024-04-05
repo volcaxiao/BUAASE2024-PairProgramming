@@ -17,10 +17,8 @@ struct Board {
     };
     
     Board(uint8_t flag) : now_flag(flag), store1(0), store2(0) {
-        for (int i = 0; i < 6; ++i) {
-            holes1[i] = 4;
-            holes2[i] = 4;
-        }
+        memset(holes1, 4, sizeof(holes1));
+        memset(holes2, 4, sizeof(holes2));
     }
 
     uint8_t &getFirst(uint8_t flag) {
@@ -91,7 +89,7 @@ struct Board {
             } else if (st == OVER) {
                 score = next.getFirst(now_flag) - next.getSecond(now_flag);
             } else if (next.now_flag == now_flag) {
-                score = next.search(depth - 1, alpha, beta).second;
+                score = next.search(depth, alpha, beta).second;
             } else {
                 score = -next.search(depth - 1, -beta, -alpha).second;
             }
@@ -119,16 +117,21 @@ uint32_t mancalaOperator(Board *board) {
     return board->bestNext();
 }
 
-void formatOutputBoard(Board *board) {
+ostream &operator<<(ostream &os, uint8_t v) {
+    os.width(2);
+    return os << (int) v;
+}
+
+ostream &operator<<(ostream &os, const Board &board) {
     for (int i = 5; i >= 0; --i) {
-        cout << " | " << (int) board->holes2[i];
+        cout << " | " << board.holes2[i];
     }
     cout << " | " << endl;
-    cout << " | " << (int) board->store2 << " |            " << " | " << (int) board->store1 << " | " << endl;
+    cout << " | " << board.store2 << " |                   | " << board.store1 << " | " << endl;
     for (int i = 0; i < 6; ++i) {
-        cout << " | " << (int) board->holes1[i];
+        cout << " | " << board.holes1[i];
     }
-    cout << " | " << endl;
+    return cout << " | " << endl;
 }
 
 // test
@@ -136,7 +139,7 @@ int main() {
     Board board(1);
     Board::state st = Board::CONTINUE;
     while (st != Board::OVER) {
-        formatOutputBoard(&board);
+        cout << board << endl;
 
         uint32_t nextStep;
         if (board.now_flag == 1) {
@@ -144,9 +147,9 @@ int main() {
             cin >> nextStep;
         } else {
             nextStep = mancalaOperator(&board);
+            cout << "Player: " << (int) board.now_flag << " nextStep: " << nextStep << endl;
         }
-        cout << "Player: " << (int) board.now_flag << " nextStep: " << nextStep << endl;
         st = board.plant(nextStep);
     }
-    formatOutputBoard(&board);
+    cout << board << endl;
 }
